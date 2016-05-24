@@ -228,6 +228,7 @@ void AsyncReadFileDo(uv_work_t *req) {
 
 void AsyncReadFileAfter(uv_work_t *req) {
     AsyncBaton *baton = static_cast<AsyncBaton*>(req->data);
+    Nan::HandleScope scope;
     if (baton->error) {
         Local<Object> error = Nan::New<Object>();
         error->Set(Nan::New("code").ToLocalChecked(), Nan::New(baton->error));
