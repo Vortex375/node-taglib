@@ -228,6 +228,7 @@ void AsyncReadFileDo(uv_work_t *req) {
 
 void AsyncReadFileAfter(uv_work_t *req) {
     AsyncBaton *baton = static_cast<AsyncBaton*>(req->data);
+    Nan::HandleScope scope;
     if (baton->error) {
         Local<Object> error = Nan::New<Object>();
         error->Set(Nan::New("code").ToLocalChecked(), Nan::New(baton->error));
@@ -244,6 +245,7 @@ void AsyncReadFileAfter(uv_work_t *req) {
             tagObj->Set(Nan::New("artist").ToLocalChecked(), TagLibStringToString(tag->artist()));
             tagObj->Set(Nan::New("comment").ToLocalChecked(), TagLibStringToString(tag->comment()));
             tagObj->Set(Nan::New("genre").ToLocalChecked(), TagLibStringToString(tag->genre()));
+            tagObj->Set(Nan::New("path").ToLocalChecked(), TagLibStringToString(baton->path));
             tagObj->Set(Nan::New("title").ToLocalChecked(), TagLibStringToString(tag->title()));
             tagObj->Set(Nan::New("track").ToLocalChecked(), Nan::New(tag->track()));
             tagObj->Set(Nan::New("year").ToLocalChecked(), Nan::New(tag->year()));
